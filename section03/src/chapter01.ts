@@ -39,7 +39,7 @@ const unknownExam = () => {
  * never 타입
  */
 const neverExam = () => {
-  let neverVar: never;
+  let neverVar = null as never;
 
   const neverFunc = (): never => {
     while (true) {}
