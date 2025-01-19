@@ -1,25 +1,23 @@
 import { useState } from "react";
+import { useTodoDispatch } from "../contexts/TodoDispatchContext";
 
-interface EditorProps {
-  onClickAdd: (text: string) => void;
-}
-
-const Editor = ({ onClickAdd }: EditorProps) => {
+const Editor = () => {
   const [text, setText] = useState("");
+  const { addTodo } = useTodoDispatch();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setText(event.target.value);
   };
 
-  const handleClickAdd = () => {
-    onClickAdd(text);
+  const handleClick = () => {
+    addTodo(text);
     setText("");
   };
 
   return (
     <div>
       <input type="text" value={text} onChange={handleChange} />
-      <button onClick={handleClickAdd}>추가</button>
+      <button onClick={handleClick}>추가</button>
     </div>
   );
 };

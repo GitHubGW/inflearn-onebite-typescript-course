@@ -3,6 +3,8 @@ import "./App.css";
 import Editor from "./components/Editor";
 import TodoItem from "./components/TodoItem";
 import { Todo } from "./types";
+import { TodoStateContext } from "./contexts/TodoStateContext";
+import { TodoDispatchContext } from "./contexts/TodoDispatchContext";
 
 interface AddAction {
   type: "ADD";
@@ -33,27 +35,31 @@ const App = () => {
   const idRef = useRef(0);
   const [todos, dispatch] = useReducer(reducer, []);
 
-  const handleClickAdd = (text: string) => {
+  const addTodo = (text: string) => {
     const newTodo = { id: idRef.current + 1, content: text };
     dispatch({ type: "ADD", data: newTodo });
     idRef.current++;
   };
 
-  const handleClickDelete = (id: number) => {
+  const deleteTodo = (id: number) => {
     dispatch({ type: "DELETE", id });
   };
 
   return (
-    <div className="App">
-      <h1>App</h1>
-      <Editor onClickAdd={handleClickAdd} />
+    <TodoStateContext.Provider value={{ todos }}>
+      <TodoDispatchContext.Provider value={{ addTodo, deleteTodo }}>
+        <div className="App">
+          <h1>App</h1>
+          <Editor />
 
-      <div>
-        {todos.map((todo) => (
-          <TodoItem key={todo.id} todo={todo} onClickDelete={handleClickDelete} />
-        ))}
-      </div>
-    </div>
+          <div>
+            {todos.map((todo) => (
+              <TodoItem key={todo.id} todo={todo} />
+            ))}
+          </div>
+        </div>
+      </TodoDispatchContext.Provider>
+    </TodoStateContext.Provider>
   );
 };
 

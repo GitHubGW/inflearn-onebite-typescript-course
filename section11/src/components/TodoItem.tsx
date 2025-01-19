@@ -1,19 +1,21 @@
+import { useTodoDispatch } from "../contexts/TodoDispatchContext";
 import { Todo } from "../types";
 
 interface TodoItemProps {
   todo: Todo;
-  onClickDelete: (id: number) => void;
 }
 
-const TodoItem = ({ todo, onClickDelete }: TodoItemProps) => {
-  const handleClickDelete = () => {
-    onClickDelete(todo.id);
+const TodoItem = ({ todo }: TodoItemProps) => {
+  const { deleteTodo } = useTodoDispatch();
+
+  const handleClick = () => {
+    deleteTodo(todo.id);
   };
 
   return (
     <div>
       <span>{todo.content}</span>
-      <button onClick={handleClickDelete}>삭제</button>
+      <button onClick={handleClick}>삭제</button>
     </div>
   );
 };
